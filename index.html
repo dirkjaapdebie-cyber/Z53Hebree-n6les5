@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z53 Live: Volhouden & Het Anker</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e67e22;
+            --bg: #f4f7f6;
+            --hsv-gold: #fff3e0;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #333; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { background: var(--primary); color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .admin-panel { background: #dfe6e9; padding: 10px; display: none; justify-content: center; align-items: center; gap: 15px; border-bottom: 2px solid #b2bec3; }
+        
+        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
+        .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 900px; width: 100%; min-height: 500px; animation: fadeIn 0.4s ease-out; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* Typography & Components */
+        h1 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
+        .bible-hsv { background: #fff; border: 1px solid #d1d1d1; padding: 25px; font-family: 'Times New Roman', serif; line-height: 1.8; position: relative; font-size: 1.1rem; }
+        .bible-hsv::before { content: "Hebreeën 6 (HSV)"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 10px; font-size: 0.8rem; border-radius: 3px; }
+        .verse-num { color: #c0392b; font-weight: bold; font-size: 0.8rem; vertical-align: super; }
+        .highlight { background: var(--hsv-gold); border-bottom: 1px dashed var(--accent); }
+        
+        textarea, input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
+        button { padding: 12px 20px; cursor: pointer; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; }
+        
+        /* Expeditie Style (Scherm 9) */
+        .expedition-bg { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=800'); background-size: cover; color: #f1e7d0 !important; }
+        .survival-card { background: #d7ccc8; color: #3e2723; padding: 15px; border-radius: 2px; clip-path: polygon(0% 0%, 100% 0%, 98% 100%, 2% 95%); box-shadow: 5px 5px 10px rgba(0,0,0,0.3); font-weight: bold; border-left: 8px solid var(--accent); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2 id="header-title">Bijbelstudie Groep Z53</h2>
+</header>
+
+<div class="admin-panel" id="adminPanel">
+    <button onclick="changeScreen(-1)">← Vorige</button>
+    <span id="screen-info">Scherm 1 / 11</span>
+    <button onclick="changeScreen(1)">Volgende →</button>
+</div>
+
+<div class="container">
+    <!-- Scherm 1: Inloggen -->
+    <div class="screen active" id="scr1">
+        <h1>Welkom bij Z53</h1>
+        <p>Voer je voornaam in om de sessie te starten.</p>
+        <input type="text" id="nameInput" placeholder="Je voornaam...">
+        <button onclick="joinSession()">Aanmelden</button>
+        <p><button onclick="enableAdmin()" style="background:none; color:gray; border:none; font-size:0.7rem;">Open als leider</button></p>
+        <div id="attendees" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
+    </div>
+
+    <!-- Scherm 2: Terugblik -->
+    <div class="screen" id="scr2">
+        <h1>Terugblik</h1>
+        <p>Wat is je bijgebleven van de vorige bijeenkomsten?</p>
+        <textarea id="ref1"></textarea>
+        <p>Welk punt was voor jou het meest waardevol?</p>
+        <textarea id="ref2"></textarea>
+        <button onclick="submitFeedback()">Sla op</button>
+    </div>
+
+    <!-- Scherm 3: Introductie -->
+    <div class="screen" id="scr3">
+        <h1>Vandaag: De Woestijn & De Hoop</h1>
+        <p>Vandaag onderzoeken we het thema 'Volhouden'. We kijken naar de woestijnwandelaar van Max Lucado en de brief aan de Hebreeën.</p>
+        <ul>
+            <li>Het interview met Widya Soraya (Controle vs Vertrouwen).</li>
+            <li>De brontekst: Jezus als ons Anker in de HSV.</li>
+            <li>Onze eigen Survivalgids bouwen.</li>
+        </ul>
+    </div>
+
+    <!-- Scherm 4: Widya Soraya Artikel -->
+    <div class="screen" id="scr4">
+        <h1>Getuigenis: Widya Soraya</h1>
+        <div style="font-size:0.9rem; overflow-y:auto; border:1px solid #eee; padding:15px;">
+            <p>Widya Soraya (29) zocht controle via manifesteren en New Age, totdat ze God vond. "Ik werd altijd boos bij de naam Jezus. Ik vond het zwak." Op Bali bad ze om de waarheid en vond rust. "Bij manifesteren moet je presteren, bij Jezus niet."</p>
+        </div>
+        <p><strong>Reflectievraag:</strong> Herken je de angst om de controle los te laten?</p>
+    </div>
+
+    <!-- Scherm 5: De Brontekst HSV -->
+    <div class="screen" id="scr5">
+        <h1>Het Fundament (HSV)</h1>
+        <div class="bible-hsv">
+            <p><span class="verse-num">11</span> Maar wij verlangen ernaar dat ieder van u <span class="highlight">dezelfde ijver</span> laat zien... <span class="verse-num">12</span> opdat u niet traag wordt.</p>
+            <p><span class="verse-num">19</span> Deze hoop hebben wij als een <span class="highlight">anker voor de ziel</span>, dat veilig en vast is... <span class="verse-num">20</span> waar de Voorloper voor ons is binnengegaan: Jezus.</p>
+        </div>
+    </div>
+
+    <!-- Scherm 6: Analyse Hebreeën -->
+    <div class="screen" id="scr6">
+        <h1>Waarom volhouden?</h1>
+        <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.</p>
+        <p>IJver aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
+    </div>
+
+    <!-- Scherm 7: Reflectie Widya (Interactief) -->
+    <div class="screen" id="scr7">
+        <h1>Vragen bij het Artikel</h1>
+        <label>1. Wat is de 'woestijn' voor Widya?</label>
+        <input type="text" id="qW1">
+        <label>2. Wat betekent 'volhouden' in haar verhaal?</label>
+        <input type="text" id="qW2">
+        <label>3. Hoe onderscheid je controle van echte vrede?</label>
+        <input type="text" id="qW3">
+        <button onclick="postToPersonal('feed7', ['qW1','qW2','qW3'])">Mijn Feed</button>
+        <div id="feed7" style="margin-top:10px; border-top:1px solid #ccc;"></div>
+    </div>
+
+    <!-- Scherm 8: De Diepte in -->
+    <div class="screen" id="scr8">
+        <h1>Levensvragen</h1>
+        <label>1. Wat is je belangrijkste doel (je 'groene hoogland')?</label>
+        <textarea id="qD1"></textarea>
+        <label>2. Kunnen woestijnmomenten een zegen zijn?</label>
+        <textarea id="qD2"></textarea>
+        <label>3. Welk deel van je leven geef je vandaag uit handen?</label>
+        <textarea id="qD3"></textarea>
+        <button onclick="postToPersonal('feed8', ['qD1','qD2','qD3'])">Sla op</button>
+        <div id="feed8" style="margin-top:10px;"></div>
+    </div>
+
+    <!-- Scherm 9: Expeditie Survivalgids -->
+    <div class="screen expedition-bg" id="scr9">
+        <h1 style="color:#e67e22; border-bottom-color:#e67e22;">Survival-Gids Z53</h1>
+        <p>Welk advies laat je achter voor de volgende wandelaar?</p>
+        <div style="display:flex; gap:10px;">
+            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22;">
+            <button onclick="addToSurvival()" style="background:#e67e22;">DROPPEN</button>
+        </div>
+        <div id="survivalFeed" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;"></div>
+    </div>
+
+    <!-- Scherm 10: Gods Belofte -->
+    <div class="screen" id="scr10">
+        <h1>De Onveranderlijke Belofte</h1>
+        <p>God deed een belofte aan Abraham. Hij kon bij niemand zweren die hoger was, dus zwoer Hij bij Zichzelf.</p>
+        <p>Omdat God niet kan liegen, is je hoop geen wens, maar een anker.</p>
+        <div style="font-style:italic; padding:20px; background:#f9f9f9;">
+            "Vader, help ons door te zetten richting het doel dat U voor ons heeft bepaald."
+        </div>
+    </div>
+
+    <!-- Scherm 11: Afsluiting -->
+    <div class="screen" id="scr11">
+        <h1>Afronding Z53</h1>
+        <p>Bedankt voor je openheid vandaag.</p>
+        <p><strong>Onthoud voor deze week:</strong> Je bent niet alleen in de woestijn. De Hogepriester is je Voorloper.</p>
+        <button onclick="location.reload()">Sessie beëindigen</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBC3Dzm8PNPXw12VJNimvly5u2I93QeW54",
+        authDomain: "schatgravers15maart2026.firebaseapp.com",
+        databaseURL: "https://schatgravers15maart2026-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "schatgravers15maart2026",
+        storageBucket: "schatgravers15maart2026.firebasestorage.app",
+        messagingSenderId: "30561512857",
+        appId: "1:30561512857:web:fcb7868b87d292d1c97708"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const stateRef = ref(db, 'session/state');
+    const userRef = ref(db, 'session/users');
+
+    let isAdmin = false;
+    let myName = "";
+
+    // Sync Schermen
+    onValue(stateRef, (snap) => {
+        const val = snap.val();
+        if(val) showScreen(val.currentScreen);
+    });
+
+    // Sync Gebruikers
+    onValue(userRef, (snap) => {
+        const users = snap.val();
+        const div = document.getElementById('attendees');
+        div.innerHTML = '';
+        if(users) Object.values(users).forEach(u => {
+            div.innerHTML += `<span style="background:var(--primary);color:white;padding:5px 10px;border-radius:15px;">${u.name}</span>`;
+        });
+    });
+
+    window.joinSession = function() {
+        myName = document.getElementById('nameInput').value;
+        if(myName) push(userRef, { name: myName });
+    };
+
+    window.enableAdmin = function() {
+        isAdmin = true;
+        document.getElementById('adminPanel').style.display = 'flex';
+    };
+
+    window.changeScreen = function(delta) {
+        if(!isAdmin) return;
+        onValue(stateRef, (snap) => {
+            let curr = snap.val()?.currentScreen || 1;
+            let next = curr + delta;
+            if(next >= 1 && next <= 11) set(stateRef, { currentScreen: next });
+        }, { onlyOnce: true });
+    };
+
+    function showScreen(idx) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('scr' + idx).classList.add('active');
+        document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
+    }
+
+    // Lokale interactie
+    window.postToPersonal = function(feedId, inputIds) {
+        const feed = document.getElementById(feedId);
+        let html = "<div style='margin-bottom:10px; border-bottom:1px solid #eee; padding:5px;'>";
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if(el.value) html += `<p>${el.value}</p>`;
+            el.value = "";
+        });
+        feed.innerHTML = html + "</div>" + feed.innerHTML;
+    };
+
+    window.addToSurvival = function() {
+        const input = document.getElementById('guideIn');
+        if(!input.value) return;
+        const feed = document.getElementById('survivalFeed');
+        const card = document.createElement('div');
+        card.className = 'survival-card';
+        card.innerText = input.value.toUpperCase();
+        feed.prepend(card);
+        input.value = "";
+    };
+</script>
+</body>
+</html>
