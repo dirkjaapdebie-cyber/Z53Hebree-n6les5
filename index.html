@@ -20,17 +20,17 @@
         .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 900px; width: 100%; min-height: 500px; animation: fadeIn 0.4s ease-out; }
         .screen.active { display: flex; flex-direction: column; }
 
-        /* Typography & Components */
         h1 { color: var(--primary); border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-top: 0; }
-        .bible-hsv { background: #fff; border: 1px solid #d1d1d1; padding: 25px; font-family: 'Times New Roman', serif; line-height: 1.8; position: relative; font-size: 1.1rem; }
-        .bible-hsv::before { content: "Hebreeën 6 (HSV)"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 10px; font-size: 0.8rem; border-radius: 3px; }
-        .verse-num { color: #c0392b; font-weight: bold; font-size: 0.8rem; vertical-align: super; }
+        
+        /* Gecorrigeerde Bijbel Layout */
+        .bible-hsv { background: #fff; border: 1px solid #d1d1d1; padding: 25px; font-family: 'Times New Roman', serif; line-height: 1.8; position: relative; font-size: 1.05rem; max-height: 400px; overflow-y: auto; }
+        .bible-hsv::before { content: "Hebreeën 6 (HSV)"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 10px; font-size: 0.8rem; border-radius: 3px; z-index: 10; }
+        .verse-num { color: #c0392b; font-weight: bold; font-size: 0.8rem; vertical-align: super; margin-right: 2px; }
         .highlight { background: var(--hsv-gold); border-bottom: 1px dashed var(--accent); }
         
         textarea, input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; }
         button { padding: 12px 20px; cursor: pointer; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; }
         
-        /* Expeditie Style (Scherm 9) */
         .expedition-bg { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=800'); background-size: cover; color: #f1e7d0 !important; }
         .survival-card { background: #d7ccc8; color: #3e2723; padding: 15px; border-radius: 2px; clip-path: polygon(0% 0%, 100% 0%, 98% 100%, 2% 95%); box-shadow: 5px 5px 10px rgba(0,0,0,0.3); font-weight: bold; border-left: 8px solid var(--accent); }
 
@@ -75,44 +75,38 @@
         <h1>Volhouden</h1>
         <p>Wat gaan we doen?</p>
         <ul>
-            <li>Hebreën 6.</li>
+            <li>Hebreeën 6.</li>
             <li>Het interview met Widya Soraya (Controle vs Vertrouwen).</li>
             <li>De brontekst: Jezus als ons Anker in de HSV.</li>
             <li>Onze eigen Survivalgids bouwen.</li>
         </ul>
     </div>
 
-    
-   <!-- Scherm 4: Volledig Artikel Widya Soraya (PDF Embed) -->
+    <!-- Scherm 4: Volledig Artikel Widya Soraya -->
     <div class="screen" id="scr4">
         <h1>Artikel: Widya Soraya</h1>
         <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">
             <em>Lees hieronder het volledige interview uit het Nederlands Dagblad. Scroll door de PDF om het hele verhaal te lezen.</em>
         </p>
-        
         <div style="flex: 1; width: 100%; border: 2px solid var(--primary); border-radius: 8px; overflow: hidden; background: #eee;">
-            <!-- De PDF embedden vanuit de lokale map -->
-            <iframe 
-                src="Widya Soraya.pdf#toolbar=0&navpanes=0" 
-                width="100%" 
-                height="100%" 
-                style="border: none;">
-                <p>Je browser ondersteunt het weergeven van PDF's niet. 
-                <a href="widya_soraya_artikel.pdf">Klik hier om het bestand te downloaden.</a></p>
-            </iframe>
+            <iframe src="Widya Soraya.pdf#toolbar=0&navpanes=0" width="100%" height="100%" style="border: none;"></iframe>
         </div>
-
         <div class="question" style="margin-top: 15px; background: #fff3e0; padding: 10px; border-radius: 5px;">
             <strong>Groepsopdracht:</strong> Welke zin uit dit interview raakt jou het meest als het gaat over 'controle loslaten'?
         </div>
     </div>
 
-    <!-- Scherm 5: De Brontekst HSV -->
+    <!-- Scherm 5: Gecorrigeerde Volledige Tekst Hebreeën 6 -->
     <div class="screen" id="scr5">
         <h1>Het Fundament (HSV)</h1>
         <div class="bible-hsv">
-            <p><span class="verse-num">11</span> Maar wij verlangen ernaar dat ieder van u <span class="highlight">dezelfde ijver</span> laat zien... <span class="verse-num">12</span> opdat u niet traag wordt.</p>
-            <p><span class="verse-num">19</span> Deze hoop hebben wij als een <span class="highlight">anker voor de ziel</span>, dat veilig en vast is... <span class="verse-num">20</span> waar de Voorloper voor ons is binnengegaan: Jezus.</p>
+            <p><span class="verse-num">11</span>Maar wij verlangen ernaar dat ieder van u <span class="highlight">dezelfde ijver laat zien</span>, tot volle zekerheid van de hoop, tot het einde toe, <span class="verse-num">12</span>opdat u niet traag wordt, maar navolgers bent van hen die door geloof en geduld de beloften beërven.</p>
+            
+            <p><span class="verse-num">13</span>Want toen God aan Abraham de belofte deed, zwoer Hij bij Zichzelf, omdat Hij bij niemand die hoger was, kon zweren. <span class="verse-num">14</span>Hij zei: Voorzeker, rijklijk zal Ik u zegenen en overvloedig zal Ik u in aantal doen toenemen.</p>
+            
+            <p><span class="verse-num">17</span>Omdat Hij aan de erfgenamen van de belofte nog overvloediger de onveranderlijkheid van Zijn raadsbesluit wilde bewijzen, heeft God die bekrachtigd met een eed, <span class="verse-num">18</span>opdat wij door twee onveranderlijke zaken, waarin het onmogelijk is dat God liegt, een sterke bemoediging zouden hebben, wij die vluchten om de hoop te grijpen die voor ons ligt.</p>
+            
+            <p><span class="verse-num">19</span>Deze hoop hebben wij als een <span class="highlight">anker voor de ziel</span>, dat veilig en vast is en reikt tot in het binnenste heiligdom, achter het voorhangsel. <span class="verse-num">20</span>Daar is de <span class="highlight">Voorloper</span> voor ons binnengegaan, namelijk Jezus, naar de ordening van Melchizedek tot Hogepriester geworden tot in eeuwigheid.</p>
         </div>
     </div>
 
@@ -123,7 +117,7 @@
         <p>IJver aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
     </div>
 
-    <!-- Scherm 7: Reflectie Widya (Interactief) -->
+    <!-- Scherm 7: Reflectie Widya -->
     <div class="screen" id="scr7">
         <h1>Vragen bij het Artikel</h1>
         <label>1. Wat is de 'woestijn' voor Widya?</label>
@@ -149,7 +143,7 @@
         <div id="feed8" style="margin-top:10px;"></div>
     </div>
 
-    <!-- Scherm 9: Expeditie Survivalgids -->
+    <!-- Scherm 9: Survivalgids -->
     <div class="screen expedition-bg" id="scr9">
         <h1 style="color:#e67e22; border-bottom-color:#e67e22;">Survival-Gids Z53</h1>
         <p>Welk advies laat je achter voor de volgende wandelaar?</p>
@@ -201,13 +195,11 @@
     let isAdmin = false;
     let myName = "";
 
-    // Sync Schermen
     onValue(stateRef, (snap) => {
         const val = snap.val();
         if(val) showScreen(val.currentScreen);
     });
 
-    // Sync Gebruikers
     onValue(userRef, (snap) => {
         const users = snap.val();
         const div = document.getElementById('attendees');
@@ -242,7 +234,6 @@
         document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
-    // Lokale interactie
     window.postToPersonal = function(feedId, inputIds) {
         const feed = document.getElementById(feedId);
         let html = "<div style='margin-bottom:10px; border-bottom:1px solid #eee; padding:5px;'>";
