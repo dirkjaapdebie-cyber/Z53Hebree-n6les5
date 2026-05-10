@@ -206,14 +206,21 @@
     const userRef = ref(db, 'session/users');
 
     let isAdmin = false;
+    let isJoined = false; // Nieuw: houdt bij of we voorbij het inlogscherm mogen
     let myName = "";
 
-    // Altijd naar Scherm 1 bij opstarten
+    // FORCEER START OP SCHERM 1
     showScreen(1);
 
+    // Luister naar de database
     onValue(stateRef, (snap) => {
         const val = snap.val();
-        if(val && val.currentScreen) showScreen(val.currentScreen);
+        // Alleen verspringen als we Admin zijn OF als we al zijn aangemeld (isJoined)
+        if (val && val.currentScreen) {
+            if (isAdmin || isJoined) {
+                showScreen(val.currentScreen);
+            }
+        }
     });
 
     onValue(userRef, (snap) => {
@@ -226,46 +233,72 @@
     });
 
     window.joinSession = function() {
-        myName = document.getElementById('nameInput').value;
-        if(myName) push(userRef, { name: myName });
+        const input = document.getElementById('nameInput');
+        myName = input.value.trim();
+        if(myName) {
+            push(userRef, { name: myName });
+            isJoined = true; // Nu mag de gebruiker syncen met de leider
+            
+            // Haal de huidige status op om direct naar het juiste scherm te gaan
+            onValue(stateRef, (snap) => {
+                const val = snap.val();
+                if(val && val.currentScreen) {
+                    showScreen(val.currentScreen);
+                } else {
+                    // Als er nog geen scherm in DB staat, ga naar scherm 2
+                    showScreen(2);
+                }
+            }, { onlyOnce: true });
+        } else {
+            alert("Vul eerst je naam in.");
+        }
     };
 
     window.enableAdmin = function() {
         isAdmin = true;
+        isJoined = true;
         document.getElementById('adminPanel').style.display = 'flex';
+        // Als admin de sessie start, zetten we de database ook op scherm 1
         set(stateRef, { currentScreen: 1 });
+        showScreen(1);
     };
 
     window.changeScreen = function(delta) {
         if(!isAdmin) return;
+        // Gebruik een eenmalige check om de huidige stand te weten en dan te updaten
         onValue(stateRef, (snap) => {
             let curr = snap.val()?.currentScreen || 1;
             let next = curr + delta;
-            if(next >= 1 && next <= 11) set(stateRef, { currentScreen: next });
+            if(next >= 1 && next <= 11) {
+                set(stateRef, { currentScreen: next });
+            }
         }, { onlyOnce: true });
     };
 
     function showScreen(idx) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById('scr' + idx);
-        if(target) target.classList.add('active');
-        document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
+        if(target) {
+            target.classList.add('active');
+            // Update de header of info balk
+            document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
+        }
     }
 
-    // Scherm 7 specifieke functies
+    // --- Jouw overige functies (ongewijzigd) ---
     window.postToPersonalFeed = function() {
         const feed = document.getElementById('personalFeed');
         const q1 = document.getElementById('qWidya1');
         const q2 = document.getElementById('qWidya2');
         const q3 = document.getElementById('qWidya3');
         let txt = "";
-        if(q1.value) txt += "Woestijn: " + q1.value + "<br>";
-        if(q2.value) txt += "Volhouden: " + q2.value + "<br>";
-        if(q3.value) txt += "Controle: " + q3.value;
+        if(q1.value) txt += "<strong>Woestijn:</strong> " + q1.value + "<br>";
+        if(q2.value) txt += "<strong>Volhouden:</strong> " + q2.value + "<br>";
+        if(q3.value) txt += "<strong>Controle:</strong> " + q3.value;
         
         if(txt) {
             const div = document.createElement('div');
-            div.style = "padding:10px; border-bottom:1px solid #eee;";
+            div.style = "padding:10px; border-bottom:1px solid #eee; animation: fadeIn 0.3s;";
             div.innerHTML = txt;
             feed.prepend(div);
             q1.value = q2.value = q3.value = "";
@@ -273,10 +306,9 @@
     };
 
     window.resetPersonalFeed = function() {
-        document.getElementById('personalFeed').innerHTML = "";
+        if(confirm("Alles wissen?")) document.getElementById('personalFeed').innerHTML = "";
     };
 
-    // Algemene post functie voor scherm 2 en 8
     window.postToPersonal = function(feedId, inputIds) {
         const feed = document.getElementById(feedId);
         let html = "<div style='margin-bottom:10px; border-bottom:1px solid #eee; padding:10px; background:#fff;'>";
@@ -300,8 +332,11 @@
     };
 
     window.resetSession = function() {
+        if(isAdmin) {
+            if(confirm("Sessie voor iedereen resetten?")) {
+                set(stateRef, { currentScreen: 1 });
+            }
+        }
         location.reload();
     };
 </script>
-</body>
-</html>
