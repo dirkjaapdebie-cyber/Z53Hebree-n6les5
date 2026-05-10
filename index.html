@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Z53 Live: Volhouden & Het Anker</title>
+    <title>Z53 les 6 v</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -16,11 +16,11 @@
         header { background: var(--primary); color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .admin-panel { background: #dfe6e9; padding: 10px; display: none; justify-content: center; align-items: center; gap: 15px; border-bottom: 2px solid #b2bec3; }
         
-        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
-        .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 900px; width: 100%; min-height: 500px; animation: fadeIn 0.4s ease-out; }
+        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow: hidden; }
+        .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 1000px; width: 100%; height: 85vh; animation: fadeIn 0.4s ease-out; box-sizing: border-box; }
         .screen.active { display: flex; flex-direction: column; }
 
-        /* Mooie Hebreeën Layout */
+        /* Hebreeën Layout - Geoptimaliseerd voor leesruimte */
         .bible-hsv { 
             background: #fff; 
             border: 1px solid #d1d1d1; 
@@ -28,18 +28,19 @@
             font-family: 'Times New Roman', serif; 
             line-height: 1.8; 
             position: relative; 
-            font-size: 1.1rem; 
-            max-height: 450px; 
+            font-size: 1.15rem; 
             overflow-y: auto;
             border-left: 5px solid var(--accent);
             box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+            flex: 1; /* Pakt alle resterende ruimte */
         }
         .bible-hsv h3 { font-family: 'Segoe UI', sans-serif; color: var(--primary); margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .bible-hsv::before { content: "Hebreeën 6 (HSV)"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 12px; font-size: 0.8rem; border-radius: 3px; font-family: sans-serif; font-weight: bold; }
         .verse-num { color: #c0392b; font-weight: bold; font-size: 0.85rem; vertical-align: super; margin-right: 4px; }
         .highlight { background: var(--hsv-gold); border-bottom: 1px dashed var(--accent); padding: 0 2px; }
         
-        textarea, input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
+        textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box; resize: none; }
+        input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
         button { padding: 12px 20px; cursor: pointer; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
         button:hover { opacity: 0.9; transform: translateY(-1px); }
         
@@ -52,7 +53,7 @@
 <body>
 
 <header>
-    <h2 id="header-title">Bijbelstudie Groep Z53</h2>
+    <h2 id="header-title">Bijbelstudie Z53 Hebreeën 6</h2>
 </header>
 
 <div class="admin-panel" id="adminPanel">
@@ -63,7 +64,7 @@
 
 <div class="container">
     <div class="screen active" id="scr1">
-        <h1>Welkom bij Z53</h1>
+        <h1>Welkom bij deze Z53 bijeenkomst, les 5 'Volhouden!'</h1>
         <p>Voer je voornaam in om de sessie te starten.</p>
         <input type="text" id="nameInput" placeholder="Je voornaam...">
         <button onclick="joinSession()">Aanmelden</button>
@@ -74,34 +75,33 @@
     <div class="screen" id="scr2">
         <h1>Terugblik</h1>
         <p>Wat is je bijgebleven van de vorige bijeenkomsten?</p>
-        <textarea id="ref1"></textarea>
+        <textarea id="ref1" rows="3"></textarea>
         <p>Welk punt was voor jou het meest waardevol?</p>
-        <textarea id="ref2"></textarea>
+        <textarea id="ref2" rows="3"></textarea>
         <button onclick="postToPersonal('feed2', ['ref1','ref2'])">Sla op</button>
-        <div id="feed2" style="margin-top:10px;"></div>
+        <div id="feed2" style="margin-top:10px; overflow-y:auto; flex:1;"></div>
     </div>
 
     <div class="screen" id="scr3">
         <h1>Volhouden</h1>
         <p>Wat gaan we doen?</p>
-        <ul>
+        <ul style="font-size: 1.3rem; line-height: 2.2;">
             <li>Hebreeën 6.</li>
-            <li>Het interview met Widya Soraya (Controle vs Vertrouwen).</li>
-            <li>De brontekst: Jezus als ons Anker in de HSV.</li>
-            <li>Onze eigen Survivalgids bouwen.</li>
+            <li>Het interview met Widya Soraya.</li>
+            <li>Hebreeen 6, HSV.</li>
+            <li>Survivalgids</li>
         </ul>
     </div>
 
-    <div class="screen" id="scr4">
-        <h1>Artikel: Widya Soraya</h1>
-        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;"><em>Lees het volledige interview uit het Nederlands Dagblad.</em></p>
-        <div style="flex: 1; width: 100%; border: 2px solid var(--primary); border-radius: 8px; overflow: hidden; background: #eee;">
-            <iframe src="Widya Soraya.pdf#toolbar=0&navpanes=0" width="100%" height="100%" style="border: none;"></iframe>
+    <div class="screen" id="scr4" style="padding: 15px;">
+        <h2 style="margin: 0 0 10px 0;">Artikel: Widya Soraya</h2>
+        <div style="flex: 1; width: 100%; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">
+            <iframe src="Widya Soraya.pdf#view=FitH" width="100%" height="100%" style="border: none;"></iframe>
         </div>
     </div>
 
     <div class="screen" id="scr5">
-        <h1>De Kerntekst</h1>
+        <h1>Hebreeën 6</h1>
         <div class="bible-hsv">
             <h3>De oproep tot geestelijke volwassenheid</h3>
             <p><span class="verse-num">1</span>Laten wij daarom het eerste onderwijs over Christus laten rusten en doorgaan naar de volwassenheid, zonder opnieuw het fundament te leggen van bekering van dode werken en van geloof in God, <span class="verse-num">2</span>van de leer van de dopen, van de handoplegging, van de opstanding van de doden en van het eeuwig oordeel. <span class="verse-num">3</span>En dat zullen wij ook doen, als God het toestaat.</p>
@@ -120,44 +120,33 @@
     <div class="screen" id="scr6">
         <h1>Waarom volhouden?</h1>
         <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.</p>
-        <p>IJver aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
+        <p>'Inzet' aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
     </div>
 
     <div class="screen" id="scr7">
-        <h1>Reflectie: Van Controle naar Vertrouwen</h1>
-        <p>Widya's reis door haar eigen 'woestijn' naar Jezus roept vragen op over onze eigen koers.</p>
-        <div style="background: #fdf2e9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-            <div style="margin-bottom: 15px;">
-                <label><strong>1. Wat is in dit artikel de 'woestijn' voor Widya?</strong></label>
-                <input type="text" id="qWidya1" placeholder="Je gedachten...">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label><strong>2. Wat betekent 'volhouden' in haar verhaal?</strong></label>
-                <input type="text" id="qWidya2" placeholder="Je gedachten...">
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label><strong>3. Widya zegt: "Ik wilde de waarheid weten." Hoe onderscheid jij een 'illusie van controle' van echte vrede?</strong></label>
-                <input type="text" id="qWidya3" placeholder="Je gedachten...">
-            </div>
-            <button onclick="postToPersonalFeed()" style="background: var(--primary);">Voeg toe aan mijn ideeënlijst</button>
+        <h1>Reflectie: inzetten van 'inzet'</h1>
+        <div style="background: #fdf2e9; padding: 20px; border-radius: 10px; margin-bottom: 10px;">
+            <label>1. Wat is de 'woestijn' voor Widya?</label>
+            <input type="text" id="qWidya1">
+            <label>2. Wat betekent 'volhouden' in haar verhaal?</label>
+            <input type="text" id="qWidya2">
+            <label>3. Onderscheid tussen controle en echte vrede?</label>
+            <input type="text" id="qWidya3">
+            <button onclick="postToPersonalFeed()" style="margin-top:10px;">Voeg toe aan mijn ideeënlijst</button>
         </div>
-        <h3>Mijn Inzichten (Live Feed)</h3>
-        <div id="personalFeed" style="flex: 1; overflow-y: auto; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px; min-height: 150px;"></div>
-        <div style="margin-top: 10px; text-align: right;">
-            <button onclick="resetPersonalFeed()" style="background: #e74c3c; font-size: 0.8rem;">Wis al mijn invoer</button>
-        </div>
+        <div id="personalFeed" style="flex: 1; overflow-y: auto; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px;"></div>
     </div>
 
     <div class="screen" id="scr8">
         <h1>Levensvragen</h1>
-        <label>1. Wat is je belangrijkste doel (je 'groene hoogland')?</label>
-        <textarea id="qD1"></textarea>
-        <label>2. Kunnen woestijnmomenten een zegen zijn?</label>
-        <textarea id="qD2"></textarea>
-        <label>3. Welk deel van je leven geef je vandaag uit handen?</label>
-        <textarea id="qD3"></textarea>
+        <label>1. Wat is je belangrijkste doel?</label>
+        <textarea id="qD1" rows="2"></textarea>
+        <label>2. Woestijnmomenten als zegen?</label>
+        <textarea id="qD2" rows="2"></textarea>
+        <label>3. Wat geef je vandaag uit handen?</label>
+        <textarea id="qD3" rows="2"></textarea>
         <button onclick="postToPersonal('feed8', ['qD1','qD2','qD3'])">Sla op</button>
-        <div id="feed8" style="margin-top:10px;"></div>
+        <div id="feed8" style="margin-top:10px; flex:1; overflow-y:auto;"></div>
     </div>
 
     <div class="screen expedition-bg" id="scr9">
@@ -167,14 +156,14 @@
             <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22;">
             <button onclick="addToSurvival()" style="background:#e67e22;">DROPPEN</button>
         </div>
-        <div id="survivalFeed" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;"></div>
+        <div id="survivalFeed" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px; overflow-y:auto; flex:1;"></div>
     </div>
 
     <div class="screen" id="scr10">
         <h1>De Onveranderlijke Belofte</h1>
         <p>God deed een belofte aan Abraham. Hij kon bij niemand zweren die hoger was, dus zwoer Hij bij Zichzelf.</p>
         <p>Omdat God niet kan liegen, is je hoop geen wens, maar een anker.</p>
-        <div style="font-style:italic; padding:20px; background:#f9f9f9; border-left: 5px solid var(--accent);">
+        <div style="font-style:italic; padding:25px; background:#f9f9f9; border-left: 5px solid var(--accent); margin-top:40px; font-size: 1.2rem;">
             "Vader, help ons door te zetten richting het doel dat U voor ons heeft bepaald."
         </div>
     </div>
@@ -206,20 +195,15 @@
     const userRef = ref(db, 'session/users');
 
     let isAdmin = false;
-    let isJoined = false; // Nieuw: houdt bij of we voorbij het inlogscherm mogen
+    let isJoined = false;
     let myName = "";
 
-    // FORCEER START OP SCHERM 1
     showScreen(1);
 
-    // Luister naar de database
     onValue(stateRef, (snap) => {
         const val = snap.val();
-        // Alleen verspringen als we Admin zijn OF als we al zijn aangemeld (isJoined)
-        if (val && val.currentScreen) {
-            if (isAdmin || isJoined) {
-                showScreen(val.currentScreen);
-            }
+        if (val && val.currentScreen && (isAdmin || isJoined)) {
+            showScreen(val.currentScreen);
         }
     });
 
@@ -233,24 +217,13 @@
     });
 
     window.joinSession = function() {
-        const input = document.getElementById('nameInput');
-        myName = input.value.trim();
+        myName = document.getElementById('nameInput').value.trim();
         if(myName) {
             push(userRef, { name: myName });
-            isJoined = true; // Nu mag de gebruiker syncen met de leider
-            
-            // Haal de huidige status op om direct naar het juiste scherm te gaan
+            isJoined = true;
             onValue(stateRef, (snap) => {
-                const val = snap.val();
-                if(val && val.currentScreen) {
-                    showScreen(val.currentScreen);
-                } else {
-                    // Als er nog geen scherm in DB staat, ga naar scherm 2
-                    showScreen(2);
-                }
-            }, { onlyOnce: true });
-        } else {
-            alert("Vul eerst je naam in.");
+                if(snap.val()?.currentScreen) showScreen(snap.val().currentScreen);
+            }, {onlyOnce: true});
         }
     };
 
@@ -258,55 +231,41 @@
         isAdmin = true;
         isJoined = true;
         document.getElementById('adminPanel').style.display = 'flex';
-        // Als admin de sessie start, zetten we de database ook op scherm 1
         set(stateRef, { currentScreen: 1 });
-        showScreen(1);
     };
 
     window.changeScreen = function(delta) {
         if(!isAdmin) return;
-        // Gebruik een eenmalige check om de huidige stand te weten en dan te updaten
         onValue(stateRef, (snap) => {
             let curr = snap.val()?.currentScreen || 1;
             let next = curr + delta;
-            if(next >= 1 && next <= 11) {
-                set(stateRef, { currentScreen: next });
-            }
+            if(next >= 1 && next <= 11) set(stateRef, { currentScreen: next });
         }, { onlyOnce: true });
     };
 
     function showScreen(idx) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById('scr' + idx);
-        if(target) {
-            target.classList.add('active');
-            // Update de header of info balk
-            document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
-        }
+        if(target) target.classList.add('active');
+        document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
-    // --- Jouw overige functies (ongewijzigd) ---
     window.postToPersonalFeed = function() {
         const feed = document.getElementById('personalFeed');
         const q1 = document.getElementById('qWidya1');
         const q2 = document.getElementById('qWidya2');
         const q3 = document.getElementById('qWidya3');
         let txt = "";
-        if(q1.value) txt += "<strong>Woestijn:</strong> " + q1.value + "<br>";
-        if(q2.value) txt += "<strong>Volhouden:</strong> " + q2.value + "<br>";
-        if(q3.value) txt += "<strong>Controle:</strong> " + q3.value;
-        
+        if(q1.value) txt += "Woestijn: " + q1.value + "<br>";
+        if(q2.value) txt += "Volhouden: " + q2.value + "<br>";
+        if(q3.value) txt += "Controle: " + q3.value;
         if(txt) {
             const div = document.createElement('div');
-            div.style = "padding:10px; border-bottom:1px solid #eee; animation: fadeIn 0.3s;";
+            div.style = "padding:10px; border-bottom:1px solid #eee; background: #fff;";
             div.innerHTML = txt;
             feed.prepend(div);
             q1.value = q2.value = q3.value = "";
         }
-    };
-
-    window.resetPersonalFeed = function() {
-        if(confirm("Alles wissen?")) document.getElementById('personalFeed').innerHTML = "";
     };
 
     window.postToPersonal = function(feedId, inputIds) {
@@ -332,11 +291,8 @@
     };
 
     window.resetSession = function() {
-        if(isAdmin) {
-            if(confirm("Sessie voor iedereen resetten?")) {
-                set(stateRef, { currentScreen: 1 });
-            }
-        }
         location.reload();
     };
 </script>
+</body>
+</html>
