@@ -14,14 +14,13 @@
 
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #333; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         header { background: var(--primary); color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        
         .admin-panel { background: #dfe6e9; padding: 10px; display: none; justify-content: center; align-items: center; gap: 15px; border-bottom: 2px solid #b2bec3; }
         
         .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow-y: auto; }
         .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 900px; width: 100%; min-height: 500px; animation: fadeIn 0.4s ease-out; }
         .screen.active { display: flex; flex-direction: column; }
 
-        /* Bijbel Layout */
+        /* Mooie Hebreeën Layout */
         .bible-hsv { 
             background: #fff; 
             border: 1px solid #d1d1d1; 
@@ -30,11 +29,13 @@
             line-height: 1.8; 
             position: relative; 
             font-size: 1.1rem; 
-            max-height: 400px; 
+            max-height: 450px; 
             overflow-y: auto;
             border-left: 5px solid var(--accent);
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
         }
-        .bible-hsv h3 { font-family: 'Segoe UI', sans-serif; color: var(--primary); margin-top: 20px; }
+        .bible-hsv h3 { font-family: 'Segoe UI', sans-serif; color: var(--primary); margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .bible-hsv::before { content: "Hebreeën 6 (HSV)"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 12px; font-size: 0.8rem; border-radius: 3px; font-family: sans-serif; font-weight: bold; }
         .verse-num { color: #c0392b; font-weight: bold; font-size: 0.85rem; vertical-align: super; margin-right: 4px; }
         .highlight { background: var(--hsv-gold); border-bottom: 1px dashed var(--accent); padding: 0 2px; }
         
@@ -61,92 +62,97 @@
 </div>
 
 <div class="container">
-    <!-- Scherm 1: Inloggen -->
     <div class="screen active" id="scr1">
         <h1>Welkom bij Z53</h1>
-        <p>Voer je voornaam in om deel te nemen aan de sessie.</p>
+        <p>Voer je voornaam in om de sessie te starten.</p>
         <input type="text" id="nameInput" placeholder="Je voornaam...">
         <button onclick="joinSession()">Aanmelden</button>
         <p><button onclick="enableAdmin()" style="background:none; color:gray; border:none; font-size:0.7rem; cursor:pointer;">Open als leider</button></p>
         <div id="attendees" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
     </div>
 
-    <!-- Scherm 2: Terugblik -->
     <div class="screen" id="scr2">
         <h1>Terugblik</h1>
         <p>Wat is je bijgebleven van de vorige bijeenkomsten?</p>
-        <textarea id="ref1" placeholder="Je gedachten..."></textarea>
+        <textarea id="ref1"></textarea>
         <p>Welk punt was voor jou het meest waardevol?</p>
-        <textarea id="ref2" placeholder="Meest waardevolle..."></textarea>
-        <button onclick="postToPersonal('feed2', ['ref1','ref2'])">Sla op in mijn overzicht</button>
+        <textarea id="ref2"></textarea>
+        <button onclick="postToPersonal('feed2', ['ref1','ref2'])">Sla op</button>
         <div id="feed2" style="margin-top:10px;"></div>
     </div>
 
-    <!-- Scherm 3: Introductie Thema -->
     <div class="screen" id="scr3">
-        <h1>Thema: Volhouden</h1>
-        <p>Vandaag duiken we in het concept van 'volhouden' en 'vertrouwen'.</p>
+        <h1>Volhouden</h1>
+        <p>Wat gaan we doen?</p>
         <ul>
-            <li><strong>Hebreeën 6:</strong> Het anker voor de ziel.</li>
-            <li><strong>Widya Soraya:</strong> Controle loslaten vs. Vertrouwen.</li>
-            <li><strong>Survivalgids:</strong> Wat geven we elkaar mee?</li>
+            <li>Hebreeën 6.</li>
+            <li>Het interview met Widya Soraya (Controle vs Vertrouwen).</li>
+            <li>De brontekst: Jezus als ons Anker in de HSV.</li>
+            <li>Onze eigen Survivalgids bouwen.</li>
         </ul>
-        <p><em>We bidden om een open hart en nieuwe inzichten.</em></p>
     </div>
 
-    <!-- Scherm 4: Artikel Widya Soraya -->
     <div class="screen" id="scr4">
         <h1>Artikel: Widya Soraya</h1>
-        <p style="font-size: 0.9rem; color: #666;"><em>Lees het interview over controle en overgave.</em></p>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;"><em>Lees het volledige interview uit het Nederlands Dagblad.</em></p>
         <div style="flex: 1; width: 100%; border: 2px solid var(--primary); border-radius: 8px; overflow: hidden; background: #eee;">
             <iframe src="Widya Soraya.pdf#toolbar=0&navpanes=0" width="100%" height="100%" style="border: none;"></iframe>
         </div>
-        <div style="margin-top: 15px; background: #fff3e0; padding: 10px; border-radius: 5px;">
-            <strong>Vraag:</strong> Welke zin raakt jou het meest?
-        </div>
     </div>
 
-    <!-- Scherm 5: Vragen bij Artikel -->
     <div class="screen" id="scr5">
-        <h1>Reflectie Widya Soraya</h1>
-        <label>1. Wat is de 'woestijn' voor Widya?</label>
-        <input type="text" id="qW1">
-        <label>2. Wat betekent 'volhouden' in haar verhaal?</label>
-        <input type="text" id="qW2">
-        <label>3. Hoe onderscheid je controle van echte vrede?</label>
-        <input type="text" id="qW3">
-        <button onclick="postToPersonal('feed5', ['qW1','qW2','qW3'])">Sla op</button>
-        <div id="feed5" style="margin-top:10px;"></div>
-    </div>
-
-    <!-- Scherm 6: Hebreeën 6 HSV -->
-    <div class="screen" id="scr6">
-        <h1>De Brontekst (Hebreeën 6)</h1>
+        <h1>De Kerntekst</h1>
         <div class="bible-hsv">
-            <h3>Geestelijke Volwassenheid</h3>
-            <p><span class="verse-num">1</span>Laten wij daarom het eerste onderwijs over Christus laten rusten en doorgaan naar de volwassenheid...</p>
-            <p><span class="verse-num">11</span>Maar wij verlangen ernaar dat ieder van u <span class="highlight">dezelfde ijver laat zien</span>, tot volle zekerheid van de hoop, tot het einde toe...</p>
-            <h3>Het Anker</h3>
-            <p><span class="verse-num">18</span>...opdat wij een sterke bemoediging zouden hebben... <span class="verse-num">19</span>Deze hoop hebben wij als een <span class="highlight">anker voor de ziel</span>, dat veilig en vast is... <span class="verse-num">20</span>Daar is de <strong>Voorloper</strong> (Jezus) voor ons binnengegaan.</p>
+            <h3>De oproep tot geestelijke volwassenheid</h3>
+            <p><span class="verse-num">1</span>Laten wij daarom het eerste onderwijs over Christus laten rusten en doorgaan naar de volwassenheid, zonder opnieuw het fundament te leggen van bekering van dode werken en van geloof in God, <span class="verse-num">2</span>van de leer van de dopen, van de handoplegging, van de opstanding van de doden en van het eeuwig oordeel. <span class="verse-num">3</span>En dat zullen wij ook doen, als God het toestaat.</p>
+            <p><span class="verse-num">4</span>Want het is onmogelijk om hen die eens verlicht zijn geweest, die de hemelse gave geproefd hebben en deelgenoot geworden zijn van de Heilige Geest, <span class="verse-num">5</span>en die het goede Woord van God en de krachten van de komende wereld geproefd hebben, <span class="verse-num">6</span>en die daarna afvallig worden, weer opnieuw tot bekering te brengen, omdat zij voor zichzelf de Zoon van God opnieuw kruisigen en openlijk te schande maken. <span class="verse-num">7</span>Want de aarde die de regen indrinkt, die er dikwijls op valt, en die nuttig gewas voortbrengt voor hen door wie zij ook bewerkt wordt, ontvangt zegen van God. <span class="verse-num">8</span>Maar de aarde die dorens en distels voortbrengt, is verwerpelijk en de vervloeking nabij, en haar einde is verbranding.</p>
+            
+            <h3>Blijvende ijver en de belofte</h3>
+            <p><span class="verse-num">9</span>Ook al spreken wij zo, geliefden, toch zijn wij wat u betreft overtuigd van betere dingen, die met de zaligheid samenhangen. <span class="verse-num">10</span>Want God is niet onrechtvaardig dat Hij uw werk zou vergeten en de liefdevolle inspanning die u Zijn Naam bewezen hebt, doordat u de heiligen gediend hebt en nog dient.</p>
+            <p><span class="verse-num">11</span>Maar wij verlangen ernaar dat ieder van u <span class="highlight">dezelfde ijver laat zien</span>, tot volle zekerheid van de hoop, tot het einde toe, <span class="verse-num">12</span>opdat u niet traag wordt, maar navolgers bent van hen die door geloof en geduld de beloften beërven. <span class="verse-num">13</span>Want toen God aan Abraham de belofte deed, zwoer Hij bij Zichzelf, omdat Hij bij niemand die hoger was, kon zweren. <span class="verse-num">14</span>Hij zei: Voorzeker, rijklijk zal Ik u zegenen en overvloedig zal Ik u in aantal doen toenemen. <span class="verse-num">15</span>En zo heeft hij, na geduldig wachten, de belofte verkregen.</p>
+            
+            <h3>De zekerheid van Gods raadsbesluit</h3>
+            <p><span class="verse-num">16</span>Want mensen zweren wel bij iemand die hoger is dan zijzelf, en de eed tot bevestiging is voor hen het einde van alle tegenspraak. <span class="verse-num">17</span>Omdat Hij aan de erfgenamen van de belofte nog overvloediger de onveranderlijkheid van Zijn raadsbesluit wilde bewijzen, heeft God die bekrachtigd met een eed, <span class="verse-num">18</span>opdat wij door twee onveranderlijke zaken, waarin het onmogelijk is dat God liegt, een sterke bemoediging zouden hebben, wij die vluchten om de hoop te grijpen die voor ons ligt.</p>
+            <p><span class="verse-num">19</span>Deze hoop hebben wij als een <span class="highlight">anker voor de ziel</span>, dat veilig en vast is en reikt tot in het binnenste heiligdom, achter het voorhangsel. <span class="verse-num">20</span>Daar is de <span class="highlight">Voorloper</span> voor ons binnengegaan, namelijk Jezus, naar de ordening van Melchizedek tot Hogepriester geworden tot in eeuwigheid.</p>
         </div>
     </div>
 
-    <!-- Scherm 7: Analyse Bijbeltekst -->
-    <div class="screen" id="scr7">
+    <div class="screen" id="scr6">
         <h1>Waarom volhouden?</h1>
-        <p>Volgens Hebreeën is Jezus onze Hogepriester die onze weg al is gegaan.</p>
-        <blockquote style="border-left: 4px solid var(--accent); padding-left: 15px; font-style: italic;">
-            "IJver betekent hier niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper'."
-        </blockquote>
-        <p>Het anker zit niet vast in de bodem van de zee, maar 'achter het voorhangsel' (in de hemel bij God).</p>
+        <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.</p>
+        <p>IJver aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
     </div>
 
-    <!-- Scherm 8: Levensvragen -->
+    <div class="screen" id="scr7">
+        <h1>Reflectie: Van Controle naar Vertrouwen</h1>
+        <p>Widya's reis door haar eigen 'woestijn' naar Jezus roept vragen op over onze eigen koers.</p>
+        <div style="background: #fdf2e9; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label><strong>1. Wat is in dit artikel de 'woestijn' voor Widya?</strong></label>
+                <input type="text" id="qWidya1" placeholder="Je gedachten...">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label><strong>2. Wat betekent 'volhouden' in haar verhaal?</strong></label>
+                <input type="text" id="qWidya2" placeholder="Je gedachten...">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label><strong>3. Widya zegt: "Ik wilde de waarheid weten." Hoe onderscheid jij een 'illusie van controle' van echte vrede?</strong></label>
+                <input type="text" id="qWidya3" placeholder="Je gedachten...">
+            </div>
+            <button onclick="postToPersonalFeed()" style="background: var(--primary);">Voeg toe aan mijn ideeënlijst</button>
+        </div>
+        <h3>Mijn Inzichten (Live Feed)</h3>
+        <div id="personalFeed" style="flex: 1; overflow-y: auto; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px; min-height: 150px;"></div>
+        <div style="margin-top: 10px; text-align: right;">
+            <button onclick="resetPersonalFeed()" style="background: #e74c3c; font-size: 0.8rem;">Wis al mijn invoer</button>
+        </div>
+    </div>
+
     <div class="screen" id="scr8">
-        <h1>Mijn Wandel</h1>
+        <h1>Levensvragen</h1>
         <label>1. Wat is je belangrijkste doel (je 'groene hoogland')?</label>
         <textarea id="qD1"></textarea>
-        <label>2. Kunnen woestijnmomenten een zegen zijn? Hoe?</label>
+        <label>2. Kunnen woestijnmomenten een zegen zijn?</label>
         <textarea id="qD2"></textarea>
         <label>3. Welk deel van je leven geef je vandaag uit handen?</label>
         <textarea id="qD3"></textarea>
@@ -154,35 +160,28 @@
         <div id="feed8" style="margin-top:10px;"></div>
     </div>
 
-    <!-- Scherm 9: Survivalgids -->
     <div class="screen expedition-bg" id="scr9">
-        <h1 style="color:#e67e22;">Z53 Survival-Gids</h1>
-        <p>Welk advies laat je achter voor een medereiziger die het zwaar heeft?</p>
+        <h1 style="color:#e67e22;">Survival-Gids Z53</h1>
+        <p>Welk advies laat je achter voor de volgende wandelaar?</p>
         <div style="display:flex; gap:10px;">
-            <input type="text" id="guideIn" placeholder="Typ je tip..." style="background:rgba(44, 62, 80, 0.9); color:white; border-color:#e67e22;">
+            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22;">
             <button onclick="addToSurvival()" style="background:#e67e22;">DROPPEN</button>
         </div>
         <div id="survivalFeed" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;"></div>
     </div>
 
-    <!-- Scherm 10: De Belofte -->
     <div class="screen" id="scr10">
         <h1>De Onveranderlijke Belofte</h1>
-        <p>God zwoer bij Zichzelf omdat Hij niet kan liegen. Jouw hoop is geen wens, maar een anker.</p>
-        <div style="font-size: 1.2rem; text-align: center; padding:30px; background:#f9f9f9; border: 1px solid #ddd; border-radius: 10px;">
-            "Vader, help ons door te zetten richting het doel dat U voor ons heeft bepaald. Dank U dat Jezus de weg al is gegaan."
+        <p>God deed een belofte aan Abraham. Hij kon bij niemand zweren die hoger was, dus zwoer Hij bij Zichzelf.</p>
+        <p>Omdat God niet kan liegen, is je hoop geen wens, maar een anker.</p>
+        <div style="font-style:italic; padding:20px; background:#f9f9f9; border-left: 5px solid var(--accent);">
+            "Vader, help ons door te zetten richting het doel dat U voor ons heeft bepaald."
         </div>
     </div>
 
-    <!-- Scherm 11: Afronding -->
     <div class="screen" id="scr11">
-        <h1>Afronding</h1>
-        <p>Bedankt voor je deelname en openheid vandaag.</p>
-        <p><strong>Onthoud voor deze week:</strong></p>
-        <div class="survival-card" style="clip-path:none; text-align:center;">
-            JE BENT NIET ALLEEN. DE VOORLOPER IS BIJ JE.
-        </div>
-        <br>
+        <h1>Afronding Z53</h1>
+        <p>Bedankt voor je openheid vandaag. De Hogepriester is je Voorloper.</p>
         <button onclick="resetSession()">Sessie beëindigen</button>
     </div>
 </div>
@@ -208,18 +207,15 @@
 
     let isAdmin = false;
     let myName = "";
-    let currentLocalScreen = 1;
 
-    // Luister naar schermwisselingen vanuit Firebase
+    // Altijd naar Scherm 1 bij opstarten
+    showScreen(1);
+
     onValue(stateRef, (snap) => {
         const val = snap.val();
-        if(val && val.currentScreen) {
-            currentLocalScreen = val.currentScreen;
-            showScreen(val.currentScreen);
-        }
+        if(val && val.currentScreen) showScreen(val.currentScreen);
     });
 
-    // Luister naar deelnemers
     onValue(userRef, (snap) => {
         const users = snap.val();
         const div = document.getElementById('attendees');
@@ -230,13 +226,8 @@
     });
 
     window.joinSession = function() {
-        const input = document.getElementById('nameInput');
-        myName = input.value;
-        if(myName) {
-            push(userRef, { name: myName });
-            input.disabled = true;
-            alert("Welkom " + myName + "! De leider bepaalt welk scherm je ziet.");
-        }
+        myName = document.getElementById('nameInput').value;
+        if(myName) push(userRef, { name: myName });
     };
 
     window.enableAdmin = function() {
@@ -247,10 +238,11 @@
 
     window.changeScreen = function(delta) {
         if(!isAdmin) return;
-        let next = currentLocalScreen + delta;
-        if(next >= 1 && next <= 11) {
-            set(stateRef, { currentScreen: next });
-        }
+        onValue(stateRef, (snap) => {
+            let curr = snap.val()?.currentScreen || 1;
+            let next = curr + delta;
+            if(next >= 1 && next <= 11) set(stateRef, { currentScreen: next });
+        }, { onlyOnce: true });
     };
 
     function showScreen(idx) {
@@ -260,14 +252,40 @@
         document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
+    // Scherm 7 specifieke functies
+    window.postToPersonalFeed = function() {
+        const feed = document.getElementById('personalFeed');
+        const q1 = document.getElementById('qWidya1');
+        const q2 = document.getElementById('qWidya2');
+        const q3 = document.getElementById('qWidya3');
+        let txt = "";
+        if(q1.value) txt += "Woestijn: " + q1.value + "<br>";
+        if(q2.value) txt += "Volhouden: " + q2.value + "<br>";
+        if(q3.value) txt += "Controle: " + q3.value;
+        
+        if(txt) {
+            const div = document.createElement('div');
+            div.style = "padding:10px; border-bottom:1px solid #eee;";
+            div.innerHTML = txt;
+            feed.prepend(div);
+            q1.value = q2.value = q3.value = "";
+        }
+    };
+
+    window.resetPersonalFeed = function() {
+        document.getElementById('personalFeed').innerHTML = "";
+    };
+
+    // Algemene post functie voor scherm 2 en 8
     window.postToPersonal = function(feedId, inputIds) {
         const feed = document.getElementById(feedId);
-        let html = "<div style='margin-top:10px; border-top:2px solid var(--accent); padding:10px; background:#fff;'><strong>Mijn antwoord:</strong>";
+        let html = "<div style='margin-bottom:10px; border-bottom:1px solid #eee; padding:10px; background:#fff;'>";
         inputIds.forEach(id => {
             const el = document.getElementById(id);
             if(el.value) html += `<p>• ${el.value}</p>`;
+            el.value = "";
         });
-        feed.innerHTML = html + "</div>";
+        feed.innerHTML = html + "</div>" + feed.innerHTML;
     };
 
     window.addToSurvival = function() {
@@ -282,13 +300,7 @@
     };
 
     window.resetSession = function() {
-        if(isAdmin && confirm("Sessie voor iedereen beëindigen?")) {
-            set(stateRef, { currentScreen: 1 });
-            set(userRef, null); // Optioneel: gooi de namenlijst leeg
-            location.reload();
-        } else {
-            location.reload();
-        }
+        location.reload();
     };
 </script>
 </body>
