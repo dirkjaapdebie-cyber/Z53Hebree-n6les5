@@ -20,6 +20,21 @@
         .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 1000px; width: 100%; height: 85vh; animation: fadeIn 0.4s ease-out; box-sizing: border-box; }
         .screen.active { display: flex; flex-direction: column; }
 
+        /* Liedtekst stijl voor startscherm */
+        .intro-lyrics {
+            background: #fdf2e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-style: italic;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #5d4037;
+            overflow-y: auto;
+            max-height: 40%;
+            border-left: 4px solid var(--accent);
+        }
+
         .bible-hsv { 
             background: #fff; 
             border: 1px solid #d1d1d1; 
@@ -63,7 +78,34 @@
 
 <div class="container">
     <div class="screen active" id="scr1">
-        <h1>Welkom bij deze Z53 bijeenkomst, les 5 'Volhouden!'</h1>
+        <h1>Welkom bij les 5 'Volhouden!'</h1>
+        
+        <div class="intro-lyrics">
+            Wij zijn het volk van God,<br>
+            wij zijn als vreemdelingen hier met elkaar.<br>
+            Een leven lang te gast,<br>
+            er ligt een hemels vaderland voor ons klaar.<br><br>
+            Houd vol, houd vol,<br>
+            Hij laat niet los.<br><br>
+            Het is een zegetocht<br>
+            van heiligen en twijfelaars bij elkaar.<br>
+            Maar kijk, wij lopen nog,<br>
+            wij lopen wat God heeft beloofd achterna.<br><br>
+            Houd vol, houd vol,<br>
+            Hij laat niet los.<br><br>
+            <strong>Refrein:</strong><br>
+            God is voor ons, God is naast ons,<br>
+            God is altijd om ons heen.<br>
+            Laat maar komen wat hierna komt,<br>
+            want Hij laat ons nooit alleen.<br><br>
+            En nu wij zijn omringd<br>
+            door zoveel helden die ons voor zijn gegaan,<br>
+            nu geven wij niet op.<br>
+            Het zijn de schouders waarop wij mogen staan.<br><br>
+            Houd vol, houd vol,<br>
+            Hij laat niet los.
+        </div>
+
         <p>Voer je voornaam in om de sessie te starten.</p>
         <input type="text" id="nameInput" placeholder="Je voornaam...">
         <button onclick="joinSession()">Aanmelden</button>
