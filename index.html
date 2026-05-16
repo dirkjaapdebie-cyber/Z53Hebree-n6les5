@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Z53 les 6 v</title>
     <style>
         :root {
@@ -12,27 +12,148 @@
             --hsv-gold: #fff3e0;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #333; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        header { background: var(--primary); color: white; padding: 1rem; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .admin-panel { background: #dfe6e9; padding: 10px; display: none; justify-content: center; align-items: center; gap: 15px; border-bottom: 2px solid #b2bec3; }
-        
-        .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; overflow: hidden; }
-        .screen { display: none; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 1000px; width: 100%; height: 85vh; animation: fadeIn 0.4s ease-out; box-sizing: border-box; }
-        .screen.active { display: flex; flex-direction: column; }
+        * {
+            box-sizing: border-box;
+        }
 
-        /* Liedtekst stijl voor startscherm */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: #333;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            flex-shrink: 0;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+        }
+
+        .admin-panel {
+            background: #dfe6e9;
+            padding: 8px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 2px solid #b2bec3;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+        }
+
+        .admin-panel button {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        #screen-info {
+            font-size: 0.9rem;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .screen {
+            display: none;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            width: 100%;
+            height: 85vh;
+            height: 85dvh;
+            animation: fadeIn 0.4s ease-out;
+            box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .screen.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Responsive padding adjustments */
+        @media (max-width: 768px) {
+            .screen {
+                padding: 15px;
+                height: 90vh;
+                height: 90dvh;
+            }
+            
+            .container {
+                padding: 5px;
+            }
+            
+            .bible-hsv {
+                padding: 20px 15px;
+                font-size: 1rem;
+            }
+            
+            .intro-lyrics {
+                font-size: 0.85rem;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .screen {
+                padding: 10px;
+                border-radius: 8px;
+                height: 92vh;
+                height: 92dvh;
+            }
+            
+            button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            input[type="text"], textarea {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+
         .intro-lyrics {
             background: #fdf2e9;
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
             font-style: italic;
-            font-size: 0.95rem;
+            font-size: clamp(0.8rem, 2.5vw, 0.95rem);
             line-height: 1.5;
             color: #5d4037;
             overflow-y: auto;
             max-height: 40%;
             border-left: 4px solid var(--accent);
+            flex-shrink: 0;
         }
 
         .bible-hsv { 
@@ -42,26 +163,181 @@
             font-family: 'Times New Roman', serif; 
             line-height: 1.8; 
             position: relative; 
-            font-size: 1.15rem; 
+            font-size: clamp(0.9rem, 3vw, 1.15rem); 
             overflow-y: auto;
             border-left: 5px solid var(--accent);
             box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
             flex: 1; 
         }
-        .bible-hsv h3 { font-family: 'Segoe UI', sans-serif; color: var(--primary); margin-top: 20px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        .bible-hsv::before { content: "Hebreeën 6"; position: absolute; top: -12px; left: 20px; background: var(--accent); color: white; padding: 2px 12px; font-size: 0.8rem; border-radius: 3px; font-family: sans-serif; font-weight: bold; }
-        .verse-num { color: #c0392b; font-weight: bold; font-size: 0.85rem; vertical-align: super; margin-right: 4px; }
-        .highlight { background: var(--hsv-gold); border-bottom: 1px dashed var(--accent); padding: 0 2px; }
-        
-        textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box; resize: none; }
-        input[type="text"] { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 1rem; box-sizing: border-box; }
-        button { padding: 12px 20px; cursor: pointer; background: var(--accent); color: white; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
-        
-        .expedition-bg { background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=800'); background-size: cover; color: #f1e7d0 !important; }
-        .survival-card { background: #d7ccc8; color: #3e2723; padding: 15px; border-radius: 2px; clip-path: polygon(0% 0%, 100% 0%, 98% 100%, 2% 95%); box-shadow: 5px 5px 10px rgba(0,0,0,0.3); font-weight: bold; border-left: 8px solid var(--accent); }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .bible-hsv h3 {
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--primary);
+            margin-top: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+        }
+
+        .bible-hsv::before {
+            content: "Hebreeën 6";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 2px 12px;
+            font-size: 0.8rem;
+            border-radius: 3px;
+            font-family: sans-serif;
+            font-weight: bold;
+        }
+
+        .verse-num {
+            color: #c0392b;
+            font-weight: bold;
+            font-size: 0.85rem;
+            vertical-align: super;
+            margin-right: 4px;
+        }
+
+        .highlight {
+            background: var(--hsv-gold);
+            border-bottom: 1px dashed var(--accent);
+            padding: 0 2px;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            box-sizing: border-box;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 12px 20px;
+            cursor: pointer;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: 0.2s;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Responsive iframe container */
+        .pdf-container {
+            flex: 1;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+            min-height: 300px;
+        }
+
+        .pdf-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            min-height: 300px;
+        }
+
+        .expedition-bg {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1473580044384-7ba9967e16a0?w=800');
+            background-size: cover;
+            background-position: center;
+            color: #f1e7d0 !important;
+        }
+
+        .survival-card {
+            background: #d7ccc8;
+            color: #3e2723;
+            padding: 15px;
+            border-radius: 2px;
+            clip-path: polygon(0% 0%, 100% 0%, 98% 100%, 2% 95%);
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+            font-weight: bold;
+            border-left: 8px solid var(--accent);
+            word-wrap: break-word;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+        }
+
+        /* Responsive grid for survival cards */
+        @media (max-width: 600px) {
+            #survivalFeed {
+                grid-template-columns: 1fr !important;
+            }
+            
+            .screen h1 {
+                font-size: clamp(1.2rem, 5vw, 2rem);
+            }
+            
+            .screen h2 {
+                font-size: clamp(1rem, 4vw, 1.5rem);
+            }
+        }
+
+        .feed-item {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding: 10px;
+            background: #fff;
+            word-wrap: break-word;
+        }
+
+        .feed-item p {
+            margin: 5px 0;
+            font-size: clamp(0.85rem, 2.5vw, 1rem);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Touch-friendly for mobile */
+        @media (hover: none) and (pointer: coarse) {
+            button, input[type="text"], textarea {
+                min-height: 44px;
+            }
+            
+            .bible-hsv {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* Landscape mode optimization */
+        @media (max-width: 900px) and (orientation: landscape) {
+            .screen {
+                height: 80vh;
+                height: 80dvh;
+            }
+            
+            .intro-lyrics {
+                max-height: 30%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -81,7 +357,7 @@
         <h1>Welkom bij les 5 'Volhouden!'</h1>
         
         <div class="intro-lyrics">
-            Wij zijn het volk van God,<br>
+        </strong> Opwekking 789</strong><br>Wij zijn het volk van God,<br>
             wij zijn als vreemdelingen hier met elkaar.<br>
             Een leven lang te gast,<br>
             er ligt een hemels vaderland voor ons klaar.<br><br>
@@ -109,11 +385,10 @@
         <p>Voer je voornaam in om de sessie te starten.</p>
         <input type="text" id="nameInput" placeholder="Je voornaam...">
         <button onclick="joinSession()">Aanmelden</button>
-        <p>
-            <button onclick="enableAdmin()" style="background:none; color:gray; border:none; font-size:0.7rem; cursor:pointer;">Open als leider</button>
-            <span style="color:gray; font-size:0.7rem;"> | </span>
-            <button onclick="resetSession()" style="background:none; color:gray; border:none; font-size:0.7rem; cursor:pointer;">Sessie resetten</button>
-        </p>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button onclick="enableAdmin()" style="background:none; color:gray; border:1px solid #ccc; font-size:0.8rem; cursor:pointer; padding: 8px;">Open als leider</button>
+            <button onclick="resetSession()" style="background:none; color:gray; border:1px solid #ccc; font-size:0.8rem; cursor:pointer; padding: 8px;">Sessie resetten</button>
+        </div>
         <div id="attendees" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
     </div>
 
@@ -130,11 +405,11 @@
     <div class="screen" id="scr3">
         <h1>Volhouden</h1>
         <p>Wat gaan we doen?</p>
-        <ul style="font-size: 1.3rem; line-height: 2.2;">
+        <ul style="font-size: clamp(1rem, 3.5vw, 1.3rem); line-height: 2.2;">
             <li>Het interview met Widya Soraya.</li>
             <li>Hebreeën 6.</li>
-            <li>Waarom volhouden? </li>
-            <li>Hoe houden we het vol?.</li>
+            <li>Waarom volhouden?</li>
+            <li>Hoe houden we het vol?</li>
             <li>Hoe houdt Widya Soraya het vol?</li>
             <li>Survivalgids</li>
         </ul>
@@ -142,8 +417,8 @@
 
     <div class="screen" id="scr4" style="padding: 15px;">
         <h2 style="margin: 0 0 10px 0;">Artikel: Widya Soraya</h2>
-        <div style="flex: 1; width: 100%; border: 1px solid #ccc; border-radius: 4px; overflow: hidden;">
-            <iframe src="Widya Soraya.pdf#view=FitH" width="100%" height="100%" style="border: none;"></iframe>
+        <div class="pdf-container">
+            <iframe src="Widya%20Soraya.pdf#view=FitH" width="100%" height="100%" style="border: none;"></iframe>
         </div>
     </div>
 
@@ -166,7 +441,13 @@
 
     <div class="screen" id="scr6">
         <h1>Waarom volhouden?</h1>
-        <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.<br>We ondervinden tegenslag<br>We worden gezegend<br>We krijgen kracht<br>We worden gedragen</p>
+        <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.</p>
+        <ul style="font-size: clamp(0.9rem, 3vw, 1.1rem); line-height: 2;">
+            <li>We ondervinden tegenslag</li>
+            <li>We worden gezegend</li>
+            <li>We krijgen kracht</li>
+            <li>We worden gedragen</li>
+        </ul>
         <p>'Inzet' aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
     </div>
 
@@ -199,18 +480,18 @@
     <div class="screen expedition-bg" id="scr9">
         <h1 style="color:#e67e22;">Survival-Gids Z53</h1>
         <p>Welk advies laat je achter voor de volgende wandelaar?</p>
-        <div style="display:flex; gap:10px;">
-            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22;">
-            <button onclick="addToSurvival()" style="background:#e67e22;">DROPPEN</button>
+        <div style="display:flex; gap:10px; flex-wrap: wrap;">
+            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22; flex: 1; min-width: 150px;">
+            <button onclick="addToSurvival()" style="background:#e67e22; white-space: nowrap;">DROPPEN</button>
         </div>
-        <div id="survivalFeed" style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px; overflow-y:auto; flex:1;"></div>
+        <div id="survivalFeed" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px; overflow-y:auto; flex:1;"></div>
     </div>
 
     <div class="screen" id="scr10">
         <h1>De Onveranderlijke Belofte</h1>
         <p>God deed een belofte aan Abraham. Hij kon bij niemand zweren die hoger was, dus zwoer Hij bij Zichzelf.</p>
         <p>Omdat God niet kan liegen, is je hoop geen wens, maar een anker.</p>
-        <div style="font-style:italic; padding:25px; background:#f9f9f9; border-left: 5px solid var(--accent); margin-top:40px; font-size: 1.2rem;">
+        <div style="font-style:italic; padding:25px; background:#f9f9f9; border-left: 5px solid var(--accent); margin-top:40px; font-size: clamp(1rem, 3.5vw, 1.2rem);">
             "Vader, help ons door te zetten richting het doel dat U voor ons heeft bepaald."
         </div>
     </div>
@@ -293,7 +574,10 @@
     function showScreen(idx) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         const target = document.getElementById('scr' + idx);
-        if(target) target.classList.add('active');
+        if(target) {
+            target.classList.add('active');
+            target.scrollTop = 0;
+        }
         document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
@@ -308,7 +592,7 @@
         if(q3.value) txt += "Controle: " + q3.value;
         if(txt) {
             const div = document.createElement('div');
-            div.style = "padding:10px; border-bottom:1px solid #eee; background: #fff;";
+            div.className = 'feed-item';
             div.innerHTML = txt;
             feed.prepend(div);
             q1.value = q2.value = q3.value = "";
@@ -317,13 +601,20 @@
 
     window.postToPersonal = function(feedId, inputIds) {
         const feed = document.getElementById(feedId);
-        let html = "<div style='margin-bottom:10px; border-bottom:1px solid #eee; padding:10px; background:#fff;'>";
+        const div = document.createElement('div');
+        div.className = 'feed-item';
         inputIds.forEach(id => {
             const el = document.getElementById(id);
-            if(el.value) html += `<p>• ${el.value}</p>`;
-            el.value = "";
+            if(el && el.value) {
+                const p = document.createElement('p');
+                p.textContent = '• ' + el.value;
+                div.appendChild(p);
+                el.value = "";
+            }
         });
-        feed.innerHTML = html + "</div>" + feed.innerHTML;
+        if(div.children.length > 0) {
+            feed.prepend(div);
+        }
     };
 
     window.addToSurvival = function() {
