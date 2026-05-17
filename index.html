@@ -97,6 +97,24 @@
             flex-direction: column;
         }
 
+        /* Speciale stijl voor scherm 4 - PDF scherm */
+        #scr4 {
+            padding: 15px;
+            overflow: hidden; /* Voorkomt dubbele scrollbars */
+        }
+
+        #scr4 .screen-inner {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #scr4 h2 {
+            flex-shrink: 0;
+            margin: 0 0 10px 0;
+        }
+
         @media (max-width: 768px) {
             .screen {
                 padding: 15px;
@@ -245,6 +263,7 @@
             transform: translateY(-1px);
         }
 
+        /* HERSTELDE PDF CONTAINER */
         .pdf-container {
             flex: 1;
             width: 100%;
@@ -252,13 +271,17 @@
             border-radius: 4px;
             overflow: hidden;
             min-height: 300px;
+            position: relative;
+            -webkit-overflow-scrolling: touch;
         }
 
         .pdf-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border: none;
-            min-height: 300px;
         }
 
         .expedition-bg {
@@ -361,7 +384,7 @@
         .video-container {
             position: relative;
             width: 100%;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            padding-bottom: 56.25%;
             height: 0;
             margin-bottom: 20px;
             background: #000;
@@ -397,7 +420,7 @@
         <h1>Welkom bij les 5 'Volhouden!'</h1>
         
         <div class="intro-lyrics">
-        </strong> Opwekking 798</strong><br>Wij zijn het volk van God,<br>
+        </strong> Opwekking 789</strong><br>Wij zijn het volk van God,<br>
             wij zijn als vreemdelingen hier met elkaar.<br>
             Een leven lang te gast,<br>
             er ligt een hemels vaderland voor ons klaar.<br><br>
@@ -421,15 +444,30 @@
             Houd vol, houd vol,<br>
             Hij laat niet los.
         </div>
-<!-- VIDEO PLAYER - YOUTUBE EMBED -->
-<div class="video-container">
-    <iframe 
-        src="https://www.youtube.com/embed/3TRhHE77whQ" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-    </iframe>
-</div>
 
+        <!-- VIDEO PLAYER -->
+        <div class="video-container">
+            <video 
+                width="100%" 
+                height="100%"
+                controls 
+                autoplay 
+                muted 
+                playsinline
+                preload="auto"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;"
+            >
+                <source 
+                    src="https://dl.dropbox.com/scl/fi/xdd0s4id94zwqul4arevc/Hervormde-kerk-Krimpen-aan-den-IJssel-Orgel-Koraal-If-you-but-trust-in-God-to-guide-you-Neumark-edit.mp4?rlkey=4u14ng7ml61r0q1or8ldvqayz&st=q16aj5h9&dl=1" 
+                    type="video/mp4"
+                >
+                <p>Je browser ondersteunt deze video niet. 
+                   <a href="https://www.dropbox.com/scl/fi/xdd0s4id94zwqul4arevc/Hervormde-kerk-Krimpen-aan-den-IJssel-Orgel-Koraal-If-you-but-trust-in-God-to-guide-you-Neumark-edit.mp4?rlkey=4u14ng7ml61r0q1or8ldvqayz&st=q16aj5h9&dl=1" target="_blank">
+                       Klik hier om de video te openen
+                   </a>
+                </p>
+            </video>
+        </div>
 
         <p>Voer je voornaam in om de sessie te starten.</p>
         <input type="text" id="nameInput" placeholder="Je voornaam...">
@@ -466,11 +504,13 @@
         </ul>
     </div>
 
-    <!-- Scherm 4: PDF -->
-    <div class="screen" id="scr4" style="padding: 15px;">
-        <h2 style="margin: 0 0 10px 0;">Artikel: Widya Soraya</h2>
-        <div class="pdf-container">
-            <iframe src="Widya%20Soraya.pdf#view=FitH" width="100%" height="100%" style="border: none;"></iframe>
+    <!-- Scherm 4: PDF - HERSTELD -->
+    <div class="screen" id="scr4">
+        <div class="screen-inner">
+            <h2>Artikel: Widya Soraya</h2>
+            <div class="pdf-container">
+                <iframe src="Widya%20Soraya.pdf#view=FitH&toolbar=1&navpanes=1&scrollbar=1"></iframe>
+            </div>
         </div>
     </div>
 
@@ -589,26 +629,19 @@
     let isJoined = false;
     let myName = "";
     
-    // Object om listeners bij te houden
     const listeners = {};
 
     showScreen(1);
 
-    // === LIVE FEED FUNCTIES ===
-    
-    // Functie om een live feed op te zetten voor een specifieke categorie
     function setupLiveFeed(feedRef, feedElementId, formatFunction) {
-        // Verwijder oude listener als die bestaat
         if (listeners[feedElementId]) {
             off(feedRef, 'child_added', listeners[feedElementId]);
         }
         
-        // Laad eerst alle bestaande data
         onValue(feedRef, (snapshot) => {
             const feed = document.getElementById(feedElementId);
             const data = snapshot.val();
             
-            // Alleen initiële load als feed leeg is
             if (data && feed.children.length === 0) {
                 const items = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
                 items.forEach(item => {
@@ -618,12 +651,10 @@
             }
         }, { onlyOnce: true });
         
-        // Luister naar nieuwe items
         listeners[feedElementId] = onChildAdded(feedRef, (snapshot) => {
             const feed = document.getElementById(feedElementId);
             const item = snapshot.val();
             
-            // Controleer of dit item niet al in de feed staat (voorkom duplicaten)
             const existingItems = feed.querySelectorAll('.feed-item, .survival-card');
             let isDuplicate = false;
             existingItems.forEach(el => {
@@ -640,7 +671,6 @@
         });
     }
 
-    // Formatteer functie voor terugblik feed
     function formatTerugblikItem(item) {
         const div = document.createElement('div');
         div.className = 'feed-item';
@@ -661,7 +691,6 @@
         return div;
     }
 
-    // Formatteer functie voor Widya feed
     function formatWidyaItem(item) {
         const div = document.createElement('div');
         div.className = 'feed-item';
@@ -682,7 +711,6 @@
         return div;
     }
 
-    // Formatteer functie voor volhouden feed
     function formatVolhoudenItem(item) {
         const div = document.createElement('div');
         div.className = 'feed-item';
@@ -703,7 +731,6 @@
         return div;
     }
 
-    // Formatteer functie voor survival cards
     function formatSurvivalItem(item) {
         const card = document.createElement('div');
         card.className = 'survival-card';
@@ -718,14 +745,11 @@
         return card;
     }
 
-    // Zet alle live feeds op
     setupLiveFeed(terugblikRef, 'feed2', formatTerugblikItem);
     setupLiveFeed(widyaRef, 'personalFeed', formatWidyaItem);
     setupLiveFeed(volhoudenRef, 'feed8', formatVolhoudenItem);
     setupLiveFeed(survivalRef, 'survivalFeed', formatSurvivalItem);
 
-    // === SCHERM NAVIGATIE ===
-    
     onValue(stateRef, (snap) => {
         const val = snap.val();
         if (val && val.currentScreen && (isAdmin || isJoined)) {
@@ -779,8 +803,6 @@
         document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
-    // === DEEL FUNCTIES VOOR ALLE FEEDS ===
-    
     window.postToFeed = function(categorie, inputIds, feedElementId) {
         const antwoorden = [];
         let hasContent = false;
@@ -797,7 +819,6 @@
         
         if (!hasContent) return;
         
-        // Bepaal de juiste Firebase referentie
         let targetRef;
         switch(categorie) {
             case 'terugblik':
@@ -813,7 +834,6 @@
                 return;
         }
         
-        // Stuur naar Firebase
         const newItemRef = push(targetRef);
         set(newItemRef, {
             antwoorden: antwoorden,
@@ -821,7 +841,6 @@
             timestamp: Date.now()
         });
         
-        // Input velden legen
         inputIds.forEach(id => {
             const el = document.getElementById(id);
             if(el) el.value = '';
@@ -834,7 +853,6 @@
         
         if (!text) return;
         
-        // Stuur naar Firebase
         const newTipRef = push(survivalRef);
         set(newTipRef, {
             text: text,
@@ -842,12 +860,10 @@
             timestamp: Date.now()
         });
         
-        // Input veld legen
         input.value = "";
     };
 
     window.resetSession = function() {
-        // Verwijder alle listeners
         Object.keys(listeners).forEach(key => {
             const refMap = {
                 'feed2': terugblikRef,
