@@ -97,7 +97,6 @@
             flex-direction: column;
         }
 
-        /* Responsive padding adjustments */
         @media (max-width: 768px) {
             .screen {
                 padding: 15px;
@@ -246,7 +245,6 @@
             transform: translateY(-1px);
         }
 
-        /* Responsive iframe container */
         .pdf-container {
             flex: 1;
             width: 100%;
@@ -281,9 +279,9 @@
             border-left: 8px solid var(--accent);
             word-wrap: break-word;
             font-size: clamp(0.8rem, 2.5vw, 1rem);
+            animation: fadeIn 0.3s ease-out;
         }
 
-        /* Responsive grid for survival cards */
         @media (max-width: 600px) {
             #survivalFeed {
                 grid-template-columns: 1fr !important;
@@ -304,11 +302,18 @@
             padding: 10px;
             background: #fff;
             word-wrap: break-word;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        .feed-item p {
-            margin: 5px 0;
+        .feed-item .meta {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .feed-item .content {
             font-size: clamp(0.85rem, 2.5vw, 1rem);
+            line-height: 1.5;
         }
 
         @keyframes fadeIn {
@@ -316,7 +321,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Touch-friendly for mobile */
         @media (hover: none) and (pointer: coarse) {
             button, input[type="text"], textarea {
                 min-height: 44px;
@@ -327,7 +331,6 @@
             }
         }
 
-        /* Landscape mode optimization */
         @media (max-width: 900px) and (orientation: landscape) {
             .screen {
                 height: 80vh;
@@ -337,6 +340,22 @@
             .intro-lyrics {
                 max-height: 30%;
             }
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
     </style>
 </head>
@@ -353,6 +372,7 @@
 </div>
 
 <div class="container">
+    <!-- Scherm 1: Welkom -->
     <div class="screen active" id="scr1">
         <h1>Welkom bij les 5 'Volhouden!'</h1>
         
@@ -382,9 +402,9 @@
             Hij laat niet los.
         </div>
 
-        <!-- VIDEO PLAYER TOEGEVOEGD -->
+        <!-- VIDEO PLAYER -->
         <div style="margin-bottom: 20px; background: #f0f0f0; padding: 10px; border-radius: 8px;">
-            <p style="margin: 0 0 5px 0; font-weight: bold;">...zo klinkt dit lied...</p>
+            <p style="margin: 0 0 5px 0; font-weight: bold;">...zo klinkt dit lied....</p>
             <video 
                 width="100%" 
                 controls 
@@ -411,16 +431,18 @@
         <div id="attendees" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;"></div>
     </div>
 
+    <!-- Scherm 2: Terugblik -->
     <div class="screen" id="scr2">
-        <h1>Terugblik</h1>
+        <h1>Terugblik <span class="live-indicator"></span><small style="font-size:0.7rem; color:#888;">Live feed</small></h1>
         <p>Wat is je bijgebleven van de vorige bijeenkomsten?</p>
-        <textarea id="ref1" rows="3"></textarea>
+        <textarea id="ref1" rows="3" placeholder="Deel je gedachten..."></textarea>
         <p>Welk punt was voor jou het meest waardevol?</p>
-        <textarea id="ref2" rows="3"></textarea>
-        <button onclick="postToPersonal('feed2', ['ref1','ref2'])">Sla op</button>
+        <textarea id="ref2" rows="3" placeholder="Deel je inzichten..."></textarea>
+        <button onclick="postToFeed('terugblik', ['ref1','ref2'], 'feed2')">Deel met groep</button>
         <div id="feed2" style="margin-top:10px; overflow-y:auto; flex:1;"></div>
     </div>
 
+    <!-- Scherm 3: Inhoud -->
     <div class="screen" id="scr3">
         <h1>Volhouden</h1>
         <p>Wat gaan we doen?</p>
@@ -434,6 +456,7 @@
         </ul>
     </div>
 
+    <!-- Scherm 4: PDF -->
     <div class="screen" id="scr4" style="padding: 15px;">
         <h2 style="margin: 0 0 10px 0;">Artikel: Widya Soraya</h2>
         <div class="pdf-container">
@@ -441,6 +464,7 @@
         </div>
     </div>
 
+    <!-- Scherm 5: Bijbeltekst -->
     <div class="screen" id="scr5">
         <h1>Hebreeën 6</h1>
         <div class="bible-hsv">
@@ -458,6 +482,7 @@
         </div>
     </div>
 
+    <!-- Scherm 6: Waarom volhouden -->
     <div class="screen" id="scr6">
         <h1>Waarom volhouden?</h1>
         <p>Volgens de auteur van Hebreeën is Jezus onze Hogepriester die meevoelt met onze zwakheden.</p>
@@ -470,42 +495,46 @@
         <p>'Inzet' aan de dag leggen betekent hier: niet op eigen kracht ploeteren, maar vertrouwen op de 'Voorloper' die de weg al is gegaan.</p>
     </div>
 
+    <!-- Scherm 7: Widya interview -->
     <div class="screen" id="scr7">
-        <h1>Hoe houdt Widya het vol?</h1>
+        <h1>Hoe houdt Widya het vol? <span class="live-indicator"></span><small style="font-size:0.7rem; color:#888;">Live feed</small></h1>
         <div style="background: #fdf2e9; padding: 20px; border-radius: 10px; margin-bottom: 10px;">
             <label>1. Wat is de 'woestijn' voor Widya?</label>
-            <input type="text" id="qWidya1">
+            <input type="text" id="qWidya1" placeholder="Jouw antwoord...">
             <label>2. Wat betekent 'volhouden' in haar verhaal?</label>
-            <input type="text" id="qWidya2">
+            <input type="text" id="qWidya2" placeholder="Jouw antwoord...">
             <label>3. Onderscheid tussen controle en echte vrede?</label>
-            <input type="text" id="qWidya3">
-            <button onclick="postToPersonalFeed()" style="margin-top:10px;">Voeg toe aan mijn ideeënlijst</button>
+            <input type="text" id="qWidya3" placeholder="Jouw antwoord...">
+            <button onclick="postToFeed('widya', ['qWidya1','qWidya2','qWidya3'], 'personalFeed')">Deel met groep</button>
         </div>
         <div id="personalFeed" style="flex: 1; overflow-y: auto; background: #fff; border: 1px solid #ddd; padding: 10px; border-radius: 5px;"></div>
     </div>
 
+    <!-- Scherm 8: Hoe houden wij het vol -->
     <div class="screen" id="scr8">
-        <h1>Hoe houden wij het vol?</h1>
+        <h1>Hoe houden wij het vol? <span class="live-indicator"></span><small style="font-size:0.7rem; color:#888;">Live feed</small></h1>
         <label>1. Wat is je belangrijkste doel?</label>
-        <textarea id="qD1" rows="2"></textarea>
+        <textarea id="qD1" rows="2" placeholder="Deel je doel..."></textarea>
         <label>2. Woestijnmomenten als zegen?</label>
-        <textarea id="qD2" rows="2"></textarea>
+        <textarea id="qD2" rows="2" placeholder="Deel je gedachten..."></textarea>
         <label>3. Wat geef je vandaag uit handen?</label>
-        <textarea id="qD3" rows="2"></textarea>
-        <button onclick="postToPersonal('feed8', ['qD1','qD2','qD3'])">Sla op</button>
+        <textarea id="qD3" rows="2" placeholder="Deel je overgave..."></textarea>
+        <button onclick="postToFeed('volhouden', ['qD1','qD2','qD3'], 'feed8')">Deel met groep</button>
         <div id="feed8" style="margin-top:10px; flex:1; overflow-y:auto;"></div>
     </div>
 
+    <!-- Scherm 9: Survival gids -->
     <div class="screen expedition-bg" id="scr9">
-        <h1 style="color:#e67e22;">Survival-Gids Z53</h1>
+        <h1 style="color:#e67e22;">Survival-Gids Z53 <span class="live-indicator"></span></h1>
         <p>Welk advies laat je achter voor de volgende wandelaar?</p>
         <div style="display:flex; gap:10px; flex-wrap: wrap;">
-            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22; flex: 1; min-width: 150px;">
+            <input type="text" id="guideIn" style="background:#2c3e50; color:white; border-color:#e67e22; flex: 1; min-width: 150px;" placeholder="Jouw survival tip...">
             <button onclick="addToSurvival()" style="background:#e67e22; white-space: nowrap;">DROPPEN</button>
         </div>
         <div id="survivalFeed" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px; margin-top:20px; overflow-y:auto; flex:1;"></div>
     </div>
 
+    <!-- Scherm 10: Belofte -->
     <div class="screen" id="scr10">
         <h1>De Onveranderlijke Belofte</h1>
         <p>God deed een belofte aan Abraham. Hij kon bij niemand zweren die hoger was, dus zwoer Hij bij Zichzelf.</p>
@@ -515,6 +544,7 @@
         </div>
     </div>
 
+    <!-- Scherm 11: Afronding -->
     <div class="screen" id="scr11">
         <h1>Afronding Z53</h1>
         <p>Bedankt voor je openheid vandaag. De Hogepriester is je Voorloper.</p>
@@ -524,7 +554,7 @@
 
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, set, onValue, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    import { getDatabase, ref, set, onValue, push, onChildAdded, off } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyBC3Dzm8PNPXw12VJNimvly5u2I93QeW54",
@@ -540,13 +570,152 @@
     const db = getDatabase(app);
     const stateRef = ref(db, 'session/state');
     const userRef = ref(db, 'session/users');
+    const survivalRef = ref(db, 'session/survivalTips');
+    const terugblikRef = ref(db, 'session/terugblik');
+    const widyaRef = ref(db, 'session/widya');
+    const volhoudenRef = ref(db, 'session/volhouden');
 
     let isAdmin = false;
     let isJoined = false;
     let myName = "";
+    
+    // Object om listeners bij te houden
+    const listeners = {};
 
     showScreen(1);
 
+    // === LIVE FEED FUNCTIES ===
+    
+    // Functie om een live feed op te zetten voor een specifieke categorie
+    function setupLiveFeed(feedRef, feedElementId, formatFunction) {
+        // Verwijder oude listener als die bestaat
+        if (listeners[feedElementId]) {
+            off(feedRef, 'child_added', listeners[feedElementId]);
+        }
+        
+        // Laad eerst alle bestaande data
+        onValue(feedRef, (snapshot) => {
+            const feed = document.getElementById(feedElementId);
+            const data = snapshot.val();
+            
+            // Alleen initiële load als feed leeg is
+            if (data && feed.children.length === 0) {
+                const items = Object.values(data).sort((a, b) => b.timestamp - a.timestamp);
+                items.forEach(item => {
+                    const element = formatFunction(item);
+                    feed.appendChild(element);
+                });
+            }
+        }, { onlyOnce: true });
+        
+        // Luister naar nieuwe items
+        listeners[feedElementId] = onChildAdded(feedRef, (snapshot) => {
+            const feed = document.getElementById(feedElementId);
+            const item = snapshot.val();
+            
+            // Controleer of dit item niet al in de feed staat (voorkom duplicaten)
+            const existingItems = feed.querySelectorAll('.feed-item, .survival-card');
+            let isDuplicate = false;
+            existingItems.forEach(el => {
+                if (el.dataset && el.dataset.key === snapshot.key) {
+                    isDuplicate = true;
+                }
+            });
+            
+            if (!isDuplicate) {
+                const element = formatFunction(item);
+                element.dataset.key = snapshot.key;
+                feed.prepend(element);
+            }
+        });
+    }
+
+    // Formatteer functie voor terugblik feed
+    function formatTerugblikItem(item) {
+        const div = document.createElement('div');
+        div.className = 'feed-item';
+        const time = new Date(item.timestamp).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+        
+        let content = '';
+        item.antwoorden.forEach((antwoord, index) => {
+            if (antwoord) {
+                const vragen = ['Wat is bijgebleven', 'Meest waardevol'];
+                content += `<p><strong>${vragen[index]}:</strong> ${antwoord}</p>`;
+            }
+        });
+        
+        div.innerHTML = `
+            <div class="meta">${item.author || 'Anoniem'} • ${time}</div>
+            <div class="content">${content}</div>
+        `;
+        return div;
+    }
+
+    // Formatteer functie voor Widya feed
+    function formatWidyaItem(item) {
+        const div = document.createElement('div');
+        div.className = 'feed-item';
+        const time = new Date(item.timestamp).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+        
+        let content = '';
+        item.antwoorden.forEach((antwoord, index) => {
+            if (antwoord) {
+                const vragen = ['Woestijn', 'Volhouden betekent', 'Controle vs vrede'];
+                content += `<p><strong>${vragen[index]}:</strong> ${antwoord}</p>`;
+            }
+        });
+        
+        div.innerHTML = `
+            <div class="meta">${item.author || 'Anoniem'} • ${time}</div>
+            <div class="content">${content}</div>
+        `;
+        return div;
+    }
+
+    // Formatteer functie voor volhouden feed
+    function formatVolhoudenItem(item) {
+        const div = document.createElement('div');
+        div.className = 'feed-item';
+        const time = new Date(item.timestamp).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+        
+        let content = '';
+        item.antwoorden.forEach((antwoord, index) => {
+            if (antwoord) {
+                const vragen = ['Belangrijkste doel', 'Woestijn als zegen', 'Uit handen geven'];
+                content += `<p><strong>${vragen[index]}:</strong> ${antwoord}</p>`;
+            }
+        });
+        
+        div.innerHTML = `
+            <div class="meta">${item.author || 'Anoniem'} • ${time}</div>
+            <div class="content">${content}</div>
+        `;
+        return div;
+    }
+
+    // Formatteer functie voor survival cards
+    function formatSurvivalItem(item) {
+        const card = document.createElement('div');
+        card.className = 'survival-card';
+        const time = new Date(item.timestamp).toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+        
+        card.innerHTML = `
+            <div style="font-size: 0.8rem; color: #666; margin-bottom: 5px;">
+                ${item.author || 'Anoniem'} • ${time}
+            </div>
+            ${item.text.toUpperCase()}
+        `;
+        return card;
+    }
+
+    // Zet alle live feeds op
+    setupLiveFeed(terugblikRef, 'feed2', formatTerugblikItem);
+    setupLiveFeed(widyaRef, 'personalFeed', formatWidyaItem);
+    setupLiveFeed(volhoudenRef, 'feed8', formatVolhoudenItem);
+    setupLiveFeed(survivalRef, 'survivalFeed', formatSurvivalItem);
+
+    // === SCHERM NAVIGATIE ===
+    
     onValue(stateRef, (snap) => {
         const val = snap.val();
         if (val && val.currentScreen && (isAdmin || isJoined)) {
@@ -600,54 +769,86 @@
         document.getElementById('screen-info').innerText = `Scherm ${idx} / 11`;
     }
 
-    window.postToPersonalFeed = function() {
-        const feed = document.getElementById('personalFeed');
-        const q1 = document.getElementById('qWidya1');
-        const q2 = document.getElementById('qWidya2');
-        const q3 = document.getElementById('qWidya3');
-        let txt = "";
-        if(q1.value) txt += "Woestijn: " + q1.value + "<br>";
-        if(q2.value) txt += "Volhouden: " + q2.value + "<br>";
-        if(q3.value) txt += "Controle: " + q3.value;
-        if(txt) {
-            const div = document.createElement('div');
-            div.className = 'feed-item';
-            div.innerHTML = txt;
-            feed.prepend(div);
-            q1.value = q2.value = q3.value = "";
-        }
-    };
-
-    window.postToPersonal = function(feedId, inputIds) {
-        const feed = document.getElementById(feedId);
-        const div = document.createElement('div');
-        div.className = 'feed-item';
+    // === DEEL FUNCTIES VOOR ALLE FEEDS ===
+    
+    window.postToFeed = function(categorie, inputIds, feedElementId) {
+        const antwoorden = [];
+        let hasContent = false;
+        
         inputIds.forEach(id => {
             const el = document.getElementById(id);
-            if(el && el.value) {
-                const p = document.createElement('p');
-                p.textContent = '• ' + el.value;
-                div.appendChild(p);
-                el.value = "";
+            if(el && el.value.trim()) {
+                antwoorden.push(el.value.trim());
+                hasContent = true;
+            } else {
+                antwoorden.push('');
             }
         });
-        if(div.children.length > 0) {
-            feed.prepend(div);
+        
+        if (!hasContent) return;
+        
+        // Bepaal de juiste Firebase referentie
+        let targetRef;
+        switch(categorie) {
+            case 'terugblik':
+                targetRef = terugblikRef;
+                break;
+            case 'widya':
+                targetRef = widyaRef;
+                break;
+            case 'volhouden':
+                targetRef = volhoudenRef;
+                break;
+            default:
+                return;
         }
+        
+        // Stuur naar Firebase
+        const newItemRef = push(targetRef);
+        set(newItemRef, {
+            antwoorden: antwoorden,
+            author: myName || 'Anoniem',
+            timestamp: Date.now()
+        });
+        
+        // Input velden legen
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.value = '';
+        });
     };
 
     window.addToSurvival = function() {
         const input = document.getElementById('guideIn');
-        if(!input.value) return;
-        const feed = document.getElementById('survivalFeed');
-        const card = document.createElement('div');
-        card.className = 'survival-card';
-        card.innerText = input.value.toUpperCase();
-        feed.prepend(card);
+        const text = input.value.trim();
+        
+        if (!text) return;
+        
+        // Stuur naar Firebase
+        const newTipRef = push(survivalRef);
+        set(newTipRef, {
+            text: text,
+            author: myName || 'Anoniem',
+            timestamp: Date.now()
+        });
+        
+        // Input veld legen
         input.value = "";
     };
 
     window.resetSession = function() {
+        // Verwijder alle listeners
+        Object.keys(listeners).forEach(key => {
+            const refMap = {
+                'feed2': terugblikRef,
+                'personalFeed': widyaRef,
+                'feed8': volhoudenRef,
+                'survivalFeed': survivalRef
+            };
+            if (refMap[key]) {
+                off(refMap[key], 'child_added', listeners[key]);
+            }
+        });
         location.reload();
     };
 </script>
