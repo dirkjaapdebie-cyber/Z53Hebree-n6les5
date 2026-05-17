@@ -357,6 +357,26 @@
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            margin-bottom: 20px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -402,22 +422,26 @@
             Hij laat niet los.
         </div>
 
-        <!-- VIDEO PLAYER -->
-        <div style="margin-bottom: 20px; background: #f0f0f0; padding: 10px; border-radius: 8px;">
-            <p style="margin: 0 0 5px 0; font-weight: bold;">...zo klinkt dit lied....</p>
+        <!-- VIDEO PLAYER - DROPBOX DIRECT LINK -->
+        <div class="video-container">
             <video 
                 width="100%" 
+                height="100%"
                 controls 
                 autoplay 
                 muted 
                 playsinline
-                style="border-radius: 4px; max-height: 200px; background: #000;"
+                preload="auto"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000;"
             >
                 <source 
-                    src="https://www.dropbox.com/scl/fi/xdd0s4id94zwqul4arevc/Hervormde-kerk-Krimpen-aan-den-IJssel-Orgel-Koraal-If-you-but-trust-in-God-to-guide-you-Neumark-edit.mp4?rlkey=4u14ng7ml61r0q1or8ldvqayz&st=q16aj5h9&dl=1#t=212" 
-                    type="video/mp4"
+                    src="https://www.youtube.com/embed/3TRhHE77whQ"
+
                 >
-                Je browser ondersteunt deze video niet.
+                <p>Je browser ondersteunt deze video niet. 
+                  
+                   </a>
+                </p>
             </video>
         </div>
 
